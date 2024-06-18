@@ -44,7 +44,7 @@ public class AdminController {
 
     @PostMapping("/update/survey/{id}")
 //    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity updateSurveylById(@PathVariable("id")
+    public ResponseEntity updateSurveyById(@PathVariable("id")
                                             long id, @RequestBody Survey newSurvey) {
         dataAccessLayer.updateSurvey(id, newSurvey);
         return ResponseEntity.ok("Update!");

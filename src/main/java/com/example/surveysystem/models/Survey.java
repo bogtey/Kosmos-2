@@ -19,6 +19,8 @@ public class Survey {
     private String question;
     @Column(name = "title")
     private String title;
+    @Column(name = "note")
+    private String note;
     @Column(name = "vote")
     private int vote;
 }

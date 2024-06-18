@@ -45,6 +45,7 @@ public class DataAccessLayer {
         Survey survey = session.get(Survey.class, id);
         survey.setQuestion(newSurvey.getQuestion());
         survey.setTitle(newSurvey.getTitle());
+        survey.setNote(newSurvey.getNote());
         session.merge(survey);
         session.getTransaction().commit();
     }
