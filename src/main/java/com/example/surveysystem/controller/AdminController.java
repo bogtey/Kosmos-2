@@ -5,37 +5,43 @@ import com.example.surveysystem.models.Man;
 import com.example.surveysystem.models.Survey;
 
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@CrossOrigin(origins = "http://localhost:3333")
-@RequestMapping("/authorized")
+@CrossOrigin(origins = "http://localhost:3001")
+@RequestMapping("/admin")
 public class AdminController {
     private final DataAccessLayer dataAccessLayer;
-
+    private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
     @Autowired
     public AdminController(DataAccessLayer dataAccessLayer) {
         this.dataAccessLayer = dataAccessLayer;
     }
 
-
-    @PostMapping("create/survey/")
+    @PostMapping("/create/survey/")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<String> createSurvey(@RequestBody Survey survey) {
         dataAccessLayer.createSurvey(survey);
         return ResponseEntity.ok("Create!");
     }
 
-    @DeleteMapping("delete/survey/{id}")
+    @PostMapping("/delete/survey/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @CrossOrigin(origins = "http://localhost:3001")
     public ResponseEntity deleteSurveyById(@PathVariable("id") long id) {
         dataAccessLayer.deleteSurvey(id);
         return ResponseEntity.ok("Delete!");
     }
 
-    @PostMapping("update/survey/{id}")
+    @PostMapping("/update/survey/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity updateSurveylById(@PathVariable("id")
                                             long id, @RequestBody Survey newSurvey) {
         dataAccessLayer.updateSurvey(id, newSurvey);
@@ -44,19 +50,22 @@ public class AdminController {
 
 
 
-    @PostMapping("create/man/")
+    @PostMapping("/create/man/")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<String> createMan(@RequestBody Man man) {
         dataAccessLayer.createMan(man);
         return ResponseEntity.ok("Create!");
     }
 
-    @DeleteMapping("delete/man/{id}")
+    @DeleteMapping("/delete/man/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity deleteManById(@PathVariable("id") long id) {
         dataAccessLayer.deleteMan(id);
         return ResponseEntity.ok("Delete!");
     }
 
-    @PostMapping("update/man/{id}")
+    @PostMapping("/update/man/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity updateManlById(@PathVariable("id")
                                          long id, @RequestBody Man newMan) {
         dataAccessLayer.updateMan(id, newMan);

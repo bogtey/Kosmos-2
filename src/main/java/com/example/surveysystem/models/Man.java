@@ -3,6 +3,9 @@ package com.example.surveysystem.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Data
 @Table(name = "man", schema = "schema", catalog = "survey")
@@ -23,4 +26,9 @@ public class Man {
     private String address;
     @Column(name = "email")
     private String email;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "User_Role", schema = "schema", joinColumns = @JoinColumn(name = "manId"))
+    @Column(name = "role")
+    private Set<String> roles = new HashSet<>();
 }

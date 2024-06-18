@@ -152,4 +152,12 @@ public class DataAccessLayer {
         }
         return userFrom;
     }
+
+    public List<Survey> getSurveysByManId(Long manId) {
+        Session session = sessionFactory.openSession();
+        session.getTransaction().begin();
+        return session.createQuery("SELECT b FROM Survey b WHERE b.man.id = :manId", Survey.class)
+                .setParameter("manId", manId)
+                .getResultList();
+    }
 }

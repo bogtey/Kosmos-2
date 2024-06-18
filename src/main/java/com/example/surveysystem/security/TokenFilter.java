@@ -15,10 +15,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+
 @Component
 public class TokenFilter extends OncePerRequestFilter {
+
     @Autowired
     private JwtCore jwtCore;
+
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -31,27 +34,25 @@ public class TokenFilter extends OncePerRequestFilter {
 
         try {
             String headerAuth = request.getHeader("Authorization");
-            if (headerAuth != null && headerAuth.startsWith("Bearer ")){
+            if (headerAuth != null && headerAuth.startsWith("Bearer ")) {
                 jwt = headerAuth.substring(7);
             }
             if (jwt != null) {
                 try {
                     userName = jwtCore.getNameFromJwt(jwt);
+                } catch (ExpiredJwtException e) {
+                    // Handle expired token
                 }
-                catch(ExpiredJwtException e){
-                    //TODO
-                }
-
                 if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     userDetails = userDetailsService.loadUserByUsername(userName);
                     auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(auth);
                 }
             }
+        } catch (Exception e) {
+            // Handle other exceptions
         }
-        catch (Exception e) {
-            //TODO
-        }
+
         filterChain.doFilter(request, response);
     }
 }

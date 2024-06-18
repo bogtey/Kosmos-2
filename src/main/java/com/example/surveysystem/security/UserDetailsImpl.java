@@ -9,16 +9,19 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
 public class UserDetailsImpl implements UserDetails {
     private Long manId;
+    private Set<String> roles;
     private String username;
     private String password;
     public static UserDetailsImpl build(Man user){
         return new UserDetailsImpl(
                 user.getManId(),
+                user.getRoles(),
                 user.getName(),
                 user.getPassword());
 

@@ -12,6 +12,9 @@ public class Survey {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long surveyId;
+    @ManyToOne
+    @JoinColumn(name = "manId")
+    private Man man;
     @Column(name = "question")
     private String question;
     @Column(name = "title")
