@@ -87,7 +87,7 @@ public class AdminController {
         return ResponseEntity.ok(surveys);
     }
     @GetMapping("/get/all/surveys/{manId}")
-    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<Survey>> getSurveysByManId(@PathVariable("manId") long manId) {
         return ResponseEntity.ok(dataAccessLayer.getSurveysByManId(manId));
     }
