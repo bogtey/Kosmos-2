@@ -92,15 +92,19 @@ public class DataAccessLayer {
             session.close();
         }
     }
-    public void updateMan(Long id, Man newMan){
-        session = sessionFactory.openSession();
+    public void updateMan(Long id, Man newMan) {
+        Session session = sessionFactory.openSession();
         session.beginTransaction();
         Man man = session.get(Man.class, id);
-        man.setName(newMan.getName());
-        man.setSurname(newMan.getSurname().toString());
-        man.setAge(newMan.getAge());
-        session.merge(man);
+        if (man != null) {
+            man.setName(newMan.getName());
+            man.setSurname(newMan.getSurname());
+            man.setAge(newMan.getAge());
+            man.setPseudonym(newMan.getPseudonym()); // Обновляем псевдоним
+            session.update(man); // Используйте update вместо merge
+        }
         session.getTransaction().commit();
+        session.close();
     }
     public Man getMan(Long id) {
         session = sessionFactory.openSession();
@@ -127,6 +131,7 @@ public class DataAccessLayer {
         session.beginTransaction();
         String name = man.getName();
 
+        // Проверяем, существует ли пользователь с таким именем
         Query query = session
                 .createQuery("FROM Man where name = :name")
                 .setParameter("name", name);
@@ -135,10 +140,12 @@ public class DataAccessLayer {
         if (userFrom != null) {
             return "Выберите другое имя";
         }
+
+        // Сохраняем пользователя в базе данных
         session.persist(man);
         session.getTransaction().commit();
         session.close();
-        return "Pabeda)";
+        return "Пользователь успешно создан";
     }
 
     public Man getUserFromDatabaseByUsername(String name) {
@@ -160,5 +167,23 @@ public class DataAccessLayer {
         return session.createQuery("SELECT b FROM Survey b WHERE b.man.id = :manId", Survey.class)
                 .setParameter("manId", manId)
                 .getResultList();
+    }
+    public boolean checkPseudonymExists(String pseudonym) {
+        Session session = sessionFactory.openSession();
+        try {
+            session.beginTransaction();
+            Query<Long> query = session.createQuery("SELECT COUNT(m) FROM Man m WHERE m.pseudonym = :pseudonym", Long.class);
+            query.setParameter("pseudonym", pseudonym);
+            Long count = query.uniqueResult();
+            session.getTransaction().commit();
+            return count != null && count > 0;
+        } catch (Exception e) {
+            if (session.getTransaction() != null) {
+                session.getTransaction().rollback();
+            }
+            throw e; // Rethrow the exception to be handled by the controller
+        } finally {
+            session.close();
+        }
     }
 }

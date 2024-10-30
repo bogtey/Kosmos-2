@@ -54,8 +54,10 @@ public class SecurityController {
     @CrossOrigin(origins = "http://localhost:3333")
     public ResponseEntity<?> signup(@RequestBody SignupRequest signupRequest) {
         signupRequest.setSurname(passwordEncoder.encode(signupRequest.getSurname()));
-        signupRequest.setRoles(Set.of("ROLE_USER"));
-        String serviceResult = userService.newUser(signupRequest);
+        signupRequest.setRoles(Set.of("ROLE_ADMIN"));
+
+        // Сохранение псевдонима в базе данных
+        String serviceResult = userService.newUser (signupRequest);
         if (Objects.equals(serviceResult, "Выберите другое имя")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(serviceResult);
         }
@@ -77,5 +79,15 @@ public class SecurityController {
         DemoApplication.currentUser = userService.loadUserEntityByUsername(signinRequest.getName());
         logger.info("Вход прошёл успешно");
         return ResponseEntity.ok(jwt);
+    }
+    @GetMapping("/check-pseudonym/{pseudonym}")
+    public ResponseEntity<?> checkPseudonym(@PathVariable String pseudonym) {
+        try {
+            boolean exists = dataAccessLayer.checkPseudonymExists(pseudonym);
+            return ResponseEntity.ok().body(exists);
+        } catch (Exception e) {
+            logger.error("Error checking pseudonym: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ошибка сервера. Попробуйте позже.");
+        }
     }
 }

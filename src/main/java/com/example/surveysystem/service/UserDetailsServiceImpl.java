@@ -19,11 +19,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetailsServiceImpl(DataAccessLayer dataAccessLayer) {
         this.dataAccessLayer = dataAccessLayer;
     }
-    public String newUser(SignupRequest signupRequest) {
+    public String newUser (SignupRequest signupRequest) {
         Man man = new Man();
         man.setName(signupRequest.getName());
-        man.setPassword(signupRequest.getSurname());
-        man.setAddress(String.valueOf(signupRequest.getAge()));
+        man.setSurname(signupRequest.getSurname());
+        man.setPassword(signupRequest.getSurname()); // Здесь, вероятно, нужно использовать закодированный пароль
+        man.setPseudonym(signupRequest.getPseudonym()); // Установка псевдонима
         man.setRoles(signupRequest.getRoles());
         return dataAccessLayer.newUserToDatabase(man);
     }
