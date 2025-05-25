@@ -1,16 +1,12 @@
 FROM gradle:8.7-jdk17 AS build
 WORKDIR /app
 
-# Копируем Gradle wrapper и конфигурации
 COPY gradle gradle
 COPY gradlew .
 COPY build.gradle .
 COPY settings.gradle .
-
-# Копируем всё остальное
 COPY . .
 
-# Собираем jar
 RUN ./gradlew bootJar --no-daemon
 
 # Этап запуска
