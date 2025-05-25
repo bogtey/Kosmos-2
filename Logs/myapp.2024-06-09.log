@@ -1,0 +1,63 @@
+2024-06-09 14:34:49 [main] INFO  c.e.surveysystem.DemoApplication - Starting DemoApplication using Java 20.0.2 with PID 11396 (C:\Users\man\Desktop\demo\build\classes\java\main started by man in C:\Users\man\Desktop\demo)
+2024-06-09 14:34:49 [main] INFO  c.e.surveysystem.DemoApplication - No active profile set, falling back to 1 default profile: "default"
+2024-06-09 14:34:50 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-06-09 14:34:50 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 6 ms. Found 0 JPA repository interfaces.
+2024-06-09 14:34:50 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 3333 (http)
+2024-06-09 14:34:50 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-3333"]
+2024-06-09 14:34:50 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-06-09 14:34:50 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.18]
+2024-06-09 14:34:50 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-06-09 14:34:50 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 878 ms
+2024-06-09 14:34:50 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-06-09 14:34:50 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.1.Final
+2024-06-09 14:34:50 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-06-09 14:34:51 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-06-09 14:34:51 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-06-09 14:34:52 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-06-09 14:34:52 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@3d01b609, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@38b7004d, org.springframework.security.web.context.SecurityContextHolderFilter@2f69d246, org.springframework.security.web.header.HeaderWriterFilter@24ac87a, org.springframework.web.filter.CorsFilter@5e25085, org.springframework.security.web.authentication.logout.LogoutFilter@52ab003b, com.example.surveysystem.security.TokenFilter@35efd12c, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@68dc2f53, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@48928b57, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@758655a9, org.springframework.security.web.session.SessionManagementFilter@6c930e7e, org.springframework.security.web.access.ExceptionTranslationFilter@2e96489b, org.springframework.security.web.access.intercept.AuthorizationFilter@2053b761]
+2024-06-09 14:34:52 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-3333"]
+2024-06-09 14:34:52 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 3333 (http) with context path ''
+2024-06-09 14:34:52 [main] INFO  c.e.surveysystem.DemoApplication - Started DemoApplication in 2.85 seconds (process running for 3.443)
+2024-06-09 14:35:17 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-06-09 14:35:20 [main] INFO  c.e.surveysystem.DemoApplication - Starting DemoApplication using Java 20.0.2 with PID 21328 (C:\Users\man\Desktop\demo\build\classes\java\main started by man in C:\Users\man\Desktop\demo)
+2024-06-09 14:35:20 [main] INFO  c.e.surveysystem.DemoApplication - No active profile set, falling back to 1 default profile: "default"
+2024-06-09 14:35:20 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-06-09 14:35:20 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 5 ms. Found 0 JPA repository interfaces.
+2024-06-09 14:35:21 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 3333 (http)
+2024-06-09 14:35:21 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-3333"]
+2024-06-09 14:35:21 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-06-09 14:35:21 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.18]
+2024-06-09 14:35:21 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-06-09 14:35:21 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 830 ms
+2024-06-09 14:35:21 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-06-09 14:35:21 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.1.Final
+2024-06-09 14:35:21 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-06-09 14:35:21 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-06-09 14:35:22 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-06-09 14:35:22 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-06-09 14:35:22 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@68722de3, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3b18009f, org.springframework.security.web.context.SecurityContextHolderFilter@24888d8b, org.springframework.security.web.header.HeaderWriterFilter@3f22ce2a, org.springframework.web.filter.CorsFilter@77aeba9b, org.springframework.security.web.authentication.logout.LogoutFilter@3e755d5f, com.example.surveysystem.security.TokenFilter@43094e0c, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@55c581e4, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@eaa07bb, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1db5de29, org.springframework.security.web.session.SessionManagementFilter@1c09bb7a, org.springframework.security.web.access.ExceptionTranslationFilter@3f12676, org.springframework.security.web.access.intercept.AuthorizationFilter@5243d730]
+2024-06-09 14:35:22 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-3333"]
+2024-06-09 14:35:22 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 3333 (http) with context path ''
+2024-06-09 14:35:22 [main] INFO  c.e.surveysystem.DemoApplication - Started DemoApplication in 2.759 seconds (process running for 3.279)
+2024-06-09 14:35:35 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-06-09 14:49:22 [main] INFO  c.e.surveysystem.DemoApplication - Starting DemoApplication using Java 20.0.2 with PID 20772 (C:\Users\man\Desktop\demo\build\classes\java\main started by man in C:\Users\man\Desktop\demo)
+2024-06-09 14:49:22 [main] INFO  c.e.surveysystem.DemoApplication - No active profile set, falling back to 1 default profile: "default"
+2024-06-09 14:49:22 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-06-09 14:49:22 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 7 ms. Found 0 JPA repository interfaces.
+2024-06-09 14:49:22 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 3333 (http)
+2024-06-09 14:49:22 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-3333"]
+2024-06-09 14:49:22 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-06-09 14:49:22 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.18]
+2024-06-09 14:49:22 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-06-09 14:49:22 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 877 ms
+2024-06-09 14:49:22 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-06-09 14:49:23 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.1.Final
+2024-06-09 14:49:23 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-06-09 14:49:23 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-06-09 14:49:24 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-06-09 14:49:24 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-06-09 14:49:24 [main] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@1693d505, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3d195d15, org.springframework.security.web.context.SecurityContextHolderFilter@15afebcc, org.springframework.security.web.header.HeaderWriterFilter@2b18b308, org.springframework.web.filter.CorsFilter@17b387ef, org.springframework.security.web.authentication.logout.LogoutFilter@4e322108, com.example.surveysystem.security.TokenFilter@1add3e03, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3b18009f, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@77aeba9b, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@489b7559, org.springframework.security.web.session.SessionManagementFilter@458704ee, org.springframework.security.web.access.ExceptionTranslationFilter@1771d6a5, org.springframework.security.web.access.intercept.AuthorizationFilter@496c6d94]
+2024-06-09 14:49:24 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-3333"]
+2024-06-09 14:49:24 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 3333 (http) with context path ''
+2024-06-09 14:49:24 [main] INFO  c.e.surveysystem.DemoApplication - Started DemoApplication in 2.886 seconds (process running for 3.458)
+2024-06-09 14:51:42 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'

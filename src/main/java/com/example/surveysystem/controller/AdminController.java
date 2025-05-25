@@ -185,11 +185,18 @@ public class AdminController {
         return ResponseEntity.ok(photos); // Возвращаем список фотографий
     }
 
-    @DeleteMapping("/delete/photo/{photoId}")
-    public ResponseEntity<String> deletePhoto(@PathVariable Long photoId) {
+    @DeleteMapping("/delete/photo/{surveyId}")
+    public ResponseEntity<String> deletePhotoBySurveyId(@PathVariable Long surveyId) {
         try {
-            photoService.deletePhoto(photoId);
-            return ResponseEntity.ok("Photo deleted successfully");
+            // Получаем все фотографии, связанные с опросом
+            List<Photo> photos = photoService.getPhotosBySurveyId(surveyId);
+
+            // Удаляем каждую фотографию
+            for (Photo photo : photos) {
+                photoService.deletePhoto(photo.getId());
+            }
+
+            return ResponseEntity.ok("Photos deleted successfully");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         } catch (Exception e) {
@@ -197,26 +204,27 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected error: " + e.getMessage());
         }
     }
-    @GetMapping("/get/pseudonym/{id}")
-    public ResponseEntity<String> getPseudonymById(@PathVariable("id") long id) {
-        Man man = dataAccessLayer.getMan(id);
-        if (man != null) {
-            return ResponseEntity.ok(man.getPseudonym());
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Пользователь не найден");
-        }
-    }
 
-    @PutMapping("/update/pseudonym/{id}")
-    public ResponseEntity<String> updatePseudonym(@PathVariable("id") long id, @RequestBody Map<String, String> body) {
-        String newPseudonym = body.get("pseudonym"); // Извлекаем псевдоним из объекта
-        Man man = dataAccessLayer.getMan(id);
-        if (man != null) {
-            man.setPseudonym(newPseudonym);
-            dataAccessLayer.updateMan(id, man);
-            return ResponseEntity.ok("Псевдоним обновлен");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Пользователь не найден");
-        }
-    }
+//    @GetMapping("/get/pseudonym/{id}")
+//    public ResponseEntity<String> getPseudonymById(@PathVariable("id") long id) {
+//        Man man = dataAccessLayer.getMan(id);
+//        if (man != null) {
+//            return ResponseEntity.ok(man.getPseudonym());
+//        } else {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Пользователь не найден");
+//        }
+//    }
+//
+//    @PutMapping("/update/pseudonym/{id}")
+//    public ResponseEntity<String> updatePseudonym(@PathVariable("id") long id, @RequestBody Map<String, String> body) {
+//        String newPseudonym = body.get("pseudonym"); // Извлекаем псевдоним из объекта
+//        Man man = dataAccessLayer.getMan(id);
+//        if (man != null) {
+//            man.setPseudonym(newPseudonym);
+//            dataAccessLayer.updateMan(id, man);
+//            return ResponseEntity.ok("Псевдоним обновлен");
+//        } else {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Пользователь не найден");
+//        }
+//    }
 }
