@@ -6,7 +6,6 @@ import com.example.surveysystem.models.Photo;
 import com.example.surveysystem.models.Survey;
 import com.example.surveysystem.repositories.SurveyRepository;
 import com.example.surveysystem.services.PhotoService;
-
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -16,14 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import java.util.Map;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -42,14 +38,14 @@ public class AdminController {
 
 
     @PostMapping("/create/survey/")
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<String> createSurvey(@RequestBody Survey survey) {
         dataAccessLayer.createSurvey(survey);
         return ResponseEntity.ok("Create!");
     }
 
     @PostMapping("/delete/survey/{id}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @CrossOrigin(origins = "http://localhost:3333")
     public ResponseEntity deleteSurveyById(@PathVariable("id") long id) {
         dataAccessLayer.deleteSurvey(id);
@@ -57,7 +53,7 @@ public class AdminController {
     }
 
     @PutMapping("/update/survey/{id}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity updateSurveyById(@PathVariable("id")
                                             long id, @RequestBody Survey newSurvey) {
         dataAccessLayer.updateSurvey(id, newSurvey);
@@ -67,21 +63,21 @@ public class AdminController {
 
 
     @PostMapping("/create/man/")
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<String> createMan(@RequestBody Man man) {
         dataAccessLayer.createMan(man);
         return ResponseEntity.ok("Create!");
     }
 
     @DeleteMapping("/delete/man/{id}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity deleteManById(@PathVariable("id") long id) {
         dataAccessLayer.deleteMan(id);
         return ResponseEntity.ok("Delete!");
     }
 
     @PostMapping("/update/man/{id}")
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity updateManlById(@PathVariable("id")
                                          long id, @RequestBody Man newMan) {
         dataAccessLayer.updateMan(id, newMan);
@@ -90,6 +86,7 @@ public class AdminController {
     @Autowired
     private SurveyRepository surveyRepository;
     @GetMapping("/get/surveys/{id}")
+//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @Transactional // Добавьте эту аннотацию
     public ResponseEntity<Survey> getSurveyById(@PathVariable("id") long id) {
         try {
@@ -104,6 +101,7 @@ public class AdminController {
     }
 
     @GetMapping("/get/surveys")
+//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<List<Survey>> getSurveys() {
         try {
             List<Survey> surveys = dataAccessLayer.getSurveys();
@@ -115,11 +113,13 @@ public class AdminController {
     }
 
     @GetMapping("/get/all/surveys/{manId}")
+//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<List<Survey>> getSurveysByManId(@PathVariable("manId") long manId) {
         return ResponseEntity.ok(dataAccessLayer.getSurveysByManId(manId));
     }
 
     @PostMapping("/upload/photo/{surveyId}/{manId}")
+//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<?> uploadPhoto(@PathVariable Long surveyId, @PathVariable Long manId, @RequestParam("file") MultipartFile file) {
         logger.info("Uploading photo for surveyId: {}, manId: {}", surveyId, manId);
 
@@ -141,12 +141,14 @@ public class AdminController {
     }
 
     @GetMapping("/get/photos/{manId}/{surveyId}")
+//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<List<Photo>> getPhotosByManIdAndSurveyId(@PathVariable Long manId, @PathVariable Long surveyId) {
         List<Photo> photos = photoService.getPhotosByManIdAndSurveyId(manId, surveyId);
         return ResponseEntity.ok(photos);
     }
 
     @GetMapping("/get/photo/{manId}/{surveyId}")
+//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<byte[]> getPhoto(@PathVariable Long manId, @PathVariable Long surveyId) {
         List<Photo> photos = photoService.getPhotosByManIdAndSurveyId(manId, surveyId);
         if (!photos.isEmpty()) {
@@ -159,6 +161,7 @@ public class AdminController {
         }
     }
     @GetMapping("/get/photo/{photoId}")
+//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<byte[]> getPhotoById(@PathVariable Long photoId) {
         logger.info("Fetching photo with photoId: {}", photoId);
 
@@ -177,6 +180,7 @@ public class AdminController {
         }
     }
     @GetMapping("/get/all/photos")
+//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<List<Photo>> getAllPhotos() {
         List<Photo> photos = photoService.getAllPhotos();
         if (photos.isEmpty()) {
@@ -186,6 +190,7 @@ public class AdminController {
     }
 
     @DeleteMapping("/delete/photo/{photoId}")
+//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<String> deletePhoto(@PathVariable Long photoId) {
         try {
             photoService.deletePhoto(photoId);
@@ -198,6 +203,7 @@ public class AdminController {
         }
     }
     @GetMapping("/get/pseudonym/{id}")
+//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<String> getPseudonymById(@PathVariable("id") long id) {
         Man man = dataAccessLayer.getMan(id);
         if (man != null) {
@@ -208,6 +214,7 @@ public class AdminController {
     }
 
     @PutMapping("/update/pseudonym/{id}")
+//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<String> updatePseudonym(@PathVariable("id") long id, @RequestBody Map<String, String> body) {
         String newPseudonym = body.get("pseudonym"); // Извлекаем псевдоним из объекта
         Man man = dataAccessLayer.getMan(id);

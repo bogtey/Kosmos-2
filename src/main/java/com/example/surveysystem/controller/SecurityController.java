@@ -4,24 +4,19 @@ import com.example.surveysystem.DemoApplication;
 import com.example.surveysystem.dal.DataAccessLayer;
 import com.example.surveysystem.dto.SigninRequest;
 import com.example.surveysystem.dto.SignupRequest;
-
 import com.example.surveysystem.exception.UnauthorizedException;
-import com.example.surveysystem.models.*;
 import com.example.surveysystem.security.JwtCore;
 import com.example.surveysystem.service.UserDetailsServiceImpl;
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -54,7 +49,9 @@ public class SecurityController {
     @CrossOrigin(origins = "http://localhost:3333")
     public ResponseEntity<?> signup(@RequestBody SignupRequest signupRequest) {
         signupRequest.setSurname(passwordEncoder.encode(signupRequest.getSurname()));
-        signupRequest.setRoles(Set.of("ROLE_ADMIN"));
+
+        // Назначаем роль "user" по умолчанию
+        signupRequest.setRoles(Set.of("ROLE_USER"));
 
         // Сохранение псевдонима в базе данных
         String serviceResult = userService.newUser (signupRequest);
