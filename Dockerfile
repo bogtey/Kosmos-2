@@ -7,6 +7,8 @@ COPY build.gradle .
 COPY settings.gradle .
 COPY . .
 
+RUN chmod +x gradlew
+
 RUN ./gradlew bootJar --no-daemon
 
 # Этап запуска
