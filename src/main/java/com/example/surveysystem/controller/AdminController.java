@@ -5,6 +5,7 @@ import com.example.surveysystem.models.Man;
 import com.example.surveysystem.models.Photo;
 import com.example.surveysystem.models.Survey;
 import com.example.surveysystem.repositories.SurveyRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.example.surveysystem.services.PhotoService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -44,13 +45,22 @@ public class AdminController {
         return ResponseEntity.ok("Create!");
     }
 
-    @PostMapping("/delete/survey/{id}")
-//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    @CrossOrigin(origins = "http://localhost:3333")
-    public ResponseEntity deleteSurveyById(@PathVariable("id") long id) {
-        dataAccessLayer.deleteSurvey(id);
-        return ResponseEntity.ok("Delete!");
+    @DeleteMapping("/delete/survey/{id}")
+    public ResponseEntity<String> deleteSurveyById(@PathVariable("id") long id) {
+        try {
+            // Проверяем, существует ли опрос
+            if (!dataAccessLayer.surveyExists(id)) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Survey not found");
+            }
+
+            dataAccessLayer.deleteSurvey(id);
+            return ResponseEntity.ok("Survey deleted successfully");
+        } catch (Exception e) {
+            logger.error("Error deleting survey with id {}: {}", id, e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected error: " + e.getMessage());
+        }
     }
+
 
     @PutMapping("/update/survey/{id}")
 //    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
@@ -60,13 +70,30 @@ public class AdminController {
         return ResponseEntity.ok("Update!");
     }
 
+    @PutMapping("/update/password/{id}")
+    public ResponseEntity<String> updateSurname(@PathVariable("id") long id, @RequestBody Map<String, String> body) {
+        String newPassword = body.get("password"); // Извлекаем новый пароль из объекта
+        Man man = dataAccessLayer.getMan(id);
+        if (man != null) {
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String hashedPassword = passwordEncoder.encode(newPassword); // Хешируем новый пароль
+            man.setSurname(hashedPassword); // Устанавливаем хешированный пароль
+            dataAccessLayer.updateMan(id, man); // Обновляем пользователя в базе данных
+            return ResponseEntity.ok("Пароль обновлен");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Пользователь не найден");
+        }
+    }
 
 
     @PostMapping("/create/man/")
-//    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<String> createMan(@RequestBody Man man) {
-        dataAccessLayer.createMan(man);
-        return ResponseEntity.ok("Create!");
+        // Хешируем пароль перед сохранением
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String hashedPassword = passwordEncoder.encode(man.getSurname()); // Предполагается, что surname содержит пароль
+        man.setSurname(hashedPassword); // Устанавливаем хешированный пароль
+        dataAccessLayer.createMan(man); // Сохраняем пользователя в базе данных
+        return ResponseEntity.ok("Пользователь создан!");
     }
 
     @DeleteMapping("/delete/man/{id}")
@@ -210,6 +237,17 @@ public class AdminController {
             return ResponseEntity.ok(man.getPseudonym());
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Пользователь не найден");
+        }
+    }
+
+    @GetMapping("/get/mans") // Новый метод для получения всех пользователей
+    public ResponseEntity<List<Man>> getAllMans() {
+        try {
+            List<Man> mans = dataAccessLayer.getAllMans(); // Предполагается, что этот метод существует в DataAccessLayer
+            return ResponseEntity.ok(mans);
+        } catch (Exception e) {
+            logger.error("Error fetching users: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 

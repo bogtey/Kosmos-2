@@ -1,10 +1,11 @@
 package com.example.surveysystem.controller;
 
-import com.example.surveysystem.DemoApplication;
 import com.example.surveysystem.dal.DataAccessLayer;
+import com.example.surveysystem.dto.AuthResponse;
 import com.example.surveysystem.dto.SigninRequest;
 import com.example.surveysystem.dto.SignupRequest;
-import com.example.surveysystem.exception.UnauthorizedException;
+import com.example.surveysystem.models.Man;
+import com.example.surveysystem.models.Role;
 import com.example.surveysystem.security.JwtCore;
 import com.example.surveysystem.service.UserDetailsServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -16,9 +17,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.GrantedAuthority;
 
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @Slf4j
@@ -27,17 +30,9 @@ import java.util.Set;
 public class SecurityController {
 
     private final UserDetailsServiceImpl userService;
-
     private final DataAccessLayer dataAccessLayer;
     private static final Logger errorLogger = LoggerFactory.getLogger("ERROR_LOGGER");
-    private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
-
-
-    @Autowired
-    public SecurityController(UserDetailsServiceImpl userService, DataAccessLayer dataAccessLayer) {
-        this.userService = userService;
-        this.dataAccessLayer = dataAccessLayer;
-    }
+    private static final Logger logger = LoggerFactory.getLogger(SecurityController.class);
 
     @Autowired
     private JwtCore jwtCore;
@@ -45,38 +40,75 @@ public class SecurityController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    public SecurityController(UserDetailsServiceImpl userService, DataAccessLayer dataAccessLayer) {
+        this.userService = userService;
+        this.dataAccessLayer = dataAccessLayer;
+    }
+
     @PostMapping("/signup")
     @CrossOrigin(origins = "http://localhost:3333")
     public ResponseEntity<?> signup(@RequestBody SignupRequest signupRequest) {
-        signupRequest.setSurname(passwordEncoder.encode(signupRequest.getSurname()));
+        // Убедитесь, что поле surname не null
+        if (signupRequest.getSurname() == null || signupRequest.getSurname().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Фамилия не может быть пустой.");
+        }
+
+        // Шифрование пароля
+        String encodedPassword = passwordEncoder.encode(signupRequest.getSurname()); // Используйте surname как пароль
+        signupRequest.setSurname(encodedPassword); // Убедитесь, что вы устанавливаете зашифрованный пароль
+
+        // Создаем нового пользователя
+        Man newMan = new Man();
+        newMan.setName(signupRequest.getName());
+        newMan.setSurname(encodedPassword); // Установите зашифрованный пароль
+        newMan.setPseudonym(signupRequest.getPseudonym());
 
         // Назначаем роль "user" по умолчанию
-        signupRequest.setRoles(Set.of("ROLE_USER"));
-
-        // Сохранение псевдонима в базе данных
-        String serviceResult = userService.newUser (signupRequest);
-        if (Objects.equals(serviceResult, "Выберите другое имя")) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(serviceResult);
+        Role userRole = dataAccessLayer.findRoleByName("ROLE_USER");
+        if (userRole == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Роль ROLE_USER не найдена.");
         }
-        if (Objects.equals(serviceResult, "Выберите другую почту")) {
+        newMan.getRoles().add(userRole);
+
+        // Сохранение нового пользователя в базе данных
+        String serviceResult = dataAccessLayer.newUserToDatabase(newMan);
+        if (Objects.equals(serviceResult, "Выберите другое имя")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(serviceResult);
         }
         return ResponseEntity.ok("Вы успешно зарегистрированы. Теперь можете войти в свой аккаунт.");
     }
 
+
+
     @PostMapping("/signin")
     @CrossOrigin(origins = "http://localhost:3333")
-    public ResponseEntity<?> signin(@RequestBody SigninRequest signinRequest) {
-        UserDetails user = userService.loadUserByUsername(signinRequest.getName());
-        if (user == null || !passwordEncoder.matches(signinRequest.getSurname(), user.getPassword())) {
-            logger.info("Ошибка авторизации пользователя " + signinRequest.getName());
-            throw new UnauthorizedException("Ошибка авторизации пользователя " + signinRequest.getName());
+    public ResponseEntity<?> signin(@RequestBody SigninRequest loginRequest) {
+        // Получаем пользователя по имени
+        Man user = dataAccessLayer.getUserFromDatabaseByUsername(loginRequest.getName());
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Пользователь не найден.");
         }
-        String jwt = jwtCore.generateToken(user);
-        DemoApplication.currentUser = userService.loadUserEntityByUsername(signinRequest.getName());
-        logger.info("Вход прошёл успешно");
-        return ResponseEntity.ok(jwt);
+
+
+        // Проверяем пароль
+        if (!passwordEncoder.matches(loginRequest.getSurname(), user.getSurname())) { // Используйте surname как пароль
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Неверный пароль.");
+        }
+
+        // Генерация токена
+        UserDetails userDetails = userService.loadUserByUsername(loginRequest.getName());
+        String token = jwtCore.generateToken(userDetails); // Используйте метод generateToken
+
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+        // Отправка токена клиенту
+        return ResponseEntity.ok(new AuthResponse(token, roles)); // AuthResponse - класс, который содержит токен
     }
+
+
+
     @GetMapping("/check-pseudonym/{pseudonym}")
     public ResponseEntity<?> checkPseudonym(@PathVariable String pseudonym) {
         try {

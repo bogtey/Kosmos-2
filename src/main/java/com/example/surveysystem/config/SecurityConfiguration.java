@@ -52,7 +52,8 @@ public class SecurityConfiguration {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/admin/**").permitAll() // Доступ только для администраторов
+                        .requestMatchers("/admin/**").permitAll()
+                        .requestMatchers("/auth/signin").permitAll()// Доступ только для администраторов
                         .anyRequest().authenticated())
                 .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
 

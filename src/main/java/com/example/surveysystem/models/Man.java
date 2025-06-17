@@ -32,8 +32,13 @@ public class Man {
     @Column(name = "pseudonym") // Новое поле
     private String pseudonym;
 
-    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "User _Role", schema = "schema", joinColumns = @JoinColumn(name = "manId"))
     @Column(name = "role")
-    private Set<String> roles = new HashSet<>();
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "man_roles",
+            joinColumns = @JoinColumn(name = "man_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
 }

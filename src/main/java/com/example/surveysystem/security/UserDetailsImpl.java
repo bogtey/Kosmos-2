@@ -8,8 +8,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
@@ -18,18 +18,20 @@ public class UserDetailsImpl implements UserDetails {
     private Set<String> roles;
     private String username;
     private String password;
-    public static UserDetailsImpl build(Man user){
+
+    public static UserDetailsImpl build(Man user) {
         return new UserDetailsImpl(
-                user.getManId(),
-                user.getRoles(),
+                user.getManId(), // Предполагается, что у вас есть метод getId() в Man
+                user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet()), // Получаем имена ролей
                 user.getName(),
                 user.getPassword());
-
     }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("user"));
-
+        return roles.stream()
+                .map(SimpleGrantedAuthority::new) // Преобразуем каждую роль в GrantedAuthority
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -41,7 +43,6 @@ public class UserDetailsImpl implements UserDetails {
     public String getUsername() {
         return username;
     }
-
 
     @Override
     public boolean isAccountNonExpired() {
