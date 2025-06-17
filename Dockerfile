@@ -27,7 +27,7 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 
 # Экспонируем порт
 EXPOSE 8080
-=======
+
 FROM gradle:8.7-jdk17 AS build
 WORKDIR /app
 
