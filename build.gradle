@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.2.2'
     id 'io.spring.dependency-management' version '1.1.4'
+    id 'application'
 }
 
 group = 'com.example'
@@ -34,6 +35,22 @@ dependencies {
     implementation 'org.slf4j:slf4j-api:2.0.11'
 }
 
+application {
+    mainClass.set('com.example.surveysystem.DemoApplication')
+}
+
 tasks.named('test') {
     useJUnitPlatform()
+<<<<<<< HEAD
+=======
+}
+
+bootJar {
+    enabled = true
+    archiveFileName = 'app.jar'
+}
+
+springBoot {
+    mainClass = 'com.example.surveysystem.DemoApplication'
+>>>>>>> b3bc88fb42afef154ec27e6e71abd4cda449e8a9
 }
