@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Используем официальный образ Maven для сборки артефакта
 FROM maven:3.8.1-openjdk-11 AS build
 
@@ -47,4 +47,3 @@ WORKDIR /app
 COPY --from=build /app/build/libs/app.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
->>>>>>> b3bc88fb42afef154ec27e6e71abd4cda449e8a9
