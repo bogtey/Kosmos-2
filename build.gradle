@@ -41,8 +41,6 @@ application {
 
 tasks.named('test') {
     useJUnitPlatform()
-<<<<<<< HEAD
-=======
 }
 
 bootJar {
@@ -52,5 +50,4 @@ bootJar {
 
 springBoot {
     mainClass = 'com.example.surveysystem.DemoApplication'
->>>>>>> b3bc88fb42afef154ec27e6e71abd4cda449e8a9
 }
