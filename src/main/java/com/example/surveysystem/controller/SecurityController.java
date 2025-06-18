@@ -47,7 +47,7 @@ public class SecurityController {
     }
 
     @PostMapping("/signup")
-    @CrossOrigin(origins = "http://localhost:3333")
+    @CrossOrigin(origins = {"http://rustrzeb.beget.tech", "http://localhost:3000"})
     public ResponseEntity<?> signup(@RequestBody SignupRequest signupRequest) {
         // Убедитесь, что поле surname не null
         if (signupRequest.getSurname() == null || signupRequest.getSurname().isEmpty()) {
@@ -82,7 +82,7 @@ public class SecurityController {
 
 
     @PostMapping("/signin")
-    @CrossOrigin(origins = "http://localhost:3333")
+    @CrossOrigin(origins = {"http://rustrzeb.beget.tech", "http://localhost:3000"})
     public ResponseEntity<?> signin(@RequestBody SigninRequest loginRequest) {
         // Получаем пользователя по имени
         Man user = dataAccessLayer.getUserFromDatabaseByUsername(loginRequest.getName());
